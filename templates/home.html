@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+<div class="row  mt-3">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Filters</h5>
+            </div>
+            <div class="card-body">
+                <form action="/" method="get">
+                    <table class="table tbquery">
+                        <tr>
+                            <td>
+                                <div class="input-group input-group">
+                                    <span class="input-group-text">Departure Date</span>
+                                    <input type="date" class="form-control" name = "date" id="datepicker" placeholder="" >
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group input-group">
+                                    <span class="input-group-text">Departure Port</span>
+                                    <select name="from_port" id="input" class="form-control">
+                                        <option value=""> Select Departure </option>
+                                        {% for item in port_list %}
+                                            <option value="{{ item[0] }}"> {{ item[0] }}</option>
+                                        {% endfor %}
+                                        
+                                    </select>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group input-group">
+                                    <span class="input-group-text">Destination Port</span>
+                                    <select name="to_port" id="input" class="form-control">
+                                        <option value=""> Select Destination </option>
+                                        {% for item in port_list %}
+                                            <option value="{{ item[0] }}"> {{ item[0] }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group input-group-sm">
+                                    <button class="btn btn-primary form-control" type="submit"><i
+                                            class="bi bi-search"></i> SEARCH </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+    
+<div class="card mt-3" >
+    <div class="card-header text-center">
+        <h3>RESULTS</h3>
+    </div>
+    <div class="card-body">
+        <table class="table table-hover table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Ship ID</th>
+                    <th>Product ID</th>
+                    <th>Quantity</th>
+                    <th>Date</th>
+                    <th>Departure Port</th>
+                    <th>Destination Port</th>
+                    <!-- <th>Action</th> -->
+                </tr>
+            </thead>
+            <tbody>
+                {% for result in results %}
+                    <tr>
+                        <td scope="row">{{ result[0] }}</td>
+                        <td>{{ result[1] }}</td>
+                        <td>{{ result[2] }}</td>
+                        <td>{{ result[3] }}</td>
+                        <td>{{ result[4] }}</td>
+                        <td>{{ result[5] }}</td>
+                        <!-- <td><a class="btn-sm btn-danger" href="/delete/{{result[0]}}">delete</a></td> -->
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="row">
+            <ul class="pagination  mx-auto">
+                {% if datas %}
+                    {% if datas.show_shouye_status==1 %}
+                    <li class="page-item"><a  class="page-link" href='{{ url_for("home", page=1) }}?{{request.query_string.decode()}}'>First Page</a></li>
+                    <li class="page-item"><a class="page-link" href='{{ url_for("home", page=datas.page-1) }}?{{request.query_string.decode()}}'>Prev</a></li>
+                    {% endif %}
+
+                    {% for dic in datas.dic_list %}
+                        {% if dic==datas.page%}
+                            <li class="page-item active"><a class="page-link" href='{{ url_for("home", page=dic) }}?{{request.query_string.decode()}}'>{{dic}}</a></li>
+                        {%else%}
+                            <li class="page-item"><a class="page-link" href='{{ url_for("home", page=dic) }}?{{request.query_string.decode()}}'>{{dic}}</a></li>
+                        {%endif%}
+                    {%endfor%}
+                    
+                    {% if datas.page < datas.total%} 
+                        <li class="page-item"><a class="page-link" href='{{ url_for("home", page=datas.page + 1) }}?{{request.query_string.decode()}}'>Next</a></li>
+                        <li class="page-item"><a class="page-link" href='{{ url_for("home", page=datas.total) }}?{{request.query_string.decode()}}'>Last Page</a></li>
+                    {%endif%}
+                    <li class="page-item"><a class="page-link" href="#" style="margin-left:10px"> Total {{datas.total}} Pages</a></li>
+                {% endif %}
+            </ul>
+
+        </div>
+    </div>
+</div>
+</div>
+{% endblock %}
