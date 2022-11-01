@@ -1,7 +1,5 @@
 import os
-from unittest import result
 import psycopg2
-from urllib.parse import urlparse
 
 def get_page(total, p):
 	show_page = 6      		   # 显示的页码数
@@ -36,24 +34,10 @@ class DBUtils:
         self.user = 'jen'
         self.pwd = '1513'
         self.db = 'Shipping'
-        self.db_url = "database=%s user=%s password=%s host=%s port=%s " % (self.db, self.user, self.pwd, self.host, self.port)
-
+        self.db_url = "postgresql://jen:1513@localhost:5432/Shipping"
     def get_con(self):
         try:
-            #self.conn = psycopg2.connect(self.db_url)
-            result = urlparse(os.environ['DATABASE_URL'])
-            self.user = result.username
-            self.pwd = result.password
-            self.host = result.hostname
-            self.db = result.path[1:]
-            self.port = result.port
-            self.conn = psycopg2.connect(
-                database=self.db,
-                user=self.user,
-                password=self.pwd,
-                host=self.host,
-                port=self.port 
-            )
+            self.conn = psycopg2.connect(self.db_url)
             self.cur = self.conn.cursor()
         except Exception as e:
             print("Error! :{}".format(e))

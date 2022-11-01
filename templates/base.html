@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <title>detect</title>
+    <title>Welcome</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -10,14 +10,35 @@
     <link rel="stylesheet" href="/static/css/bootstrap.min-4.1.0.css">
     <!-- Date Picker -->
 	  <link rel="stylesheet" href="css/bootstrap-datepicker.min.css">
+    <!-- header -->
+    <link rel="stylesheet" href="css/header.css">
   </head>
   <body>
+    <nav class="navbar navbar-expand-sm bg-secondary navbar-dark pl-5" >
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="{{url_for("home")}}">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{url_for("destinations")}}">Destination</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{url_for("shipinfo")}}">Ship Info</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{url_for("dashboard")}}">Dashboard</a>
+        </li>
+      </ul>
+    </nav>
     {% block extra %}
     {% endblock %}
     {% block content %}
     {% endblock %}
     <script src="/static/javascript/jquery-3.3.1.slim.min.js" ></script>
-  
-    <script src="/static/javascript/bootstrap.min-4.1.0.js"></script>
+
+    <script src="/static/javascript/jquery.js"></script>
+    <script src="/static/javascript/echarts.min.js"></script>
+    {% block script %}
+    {% endblock %}
   </body>
 </html>

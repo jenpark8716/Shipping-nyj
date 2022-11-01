@@ -1,0 +1,190 @@
+{% extends "base.html" %}
+
+{% block style %}
+<style>
+</style>
+{% endblock %}
+{% block content %}
+<!-- <h1 class="h3 mb-3">公司架构组织图</h1> -->
+
+<div class="row col-10 mx-auto">
+        <div class="col-6 mx-auto mt-5">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Products Chart</h5>
+                </div>
+                <div class="card-body">
+                    <div id="products" style="height: 650px;"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 mx-auto mt-5">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Revenues Chart</h5>
+                </div>
+                <div class="card-body">
+                    <div id="revenues" style="height: 650px;"></div>
+                </div>
+            </div>
+        </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript">
+
+    var products = document.getElementById("products");
+    var revenues = document.getElementById("revenues");
+    var chart_1 = echarts.init(products, 'light');
+    var chart_2 = echarts.init(revenues, 'light');
+    var app = {};
+    var option_1;
+    var option_2;
+    // var ROOT_PATH = 'https://cdn.jsdelivr.net/gh/apache/echarts-website@asf-site/examples'
+
+    chart_1.showLoading();
+    chart_2.showLoading();
+    // $.get(ROOT_PATH + '/data/asset/data/flare.json', function (data) {
+    $.get('/get_chart_data', function (data) {
+        console.log(data);
+        chart_1.hideLoading();
+        chart_2.hideLoading();
+        chart_1.setOption(
+            (option_1 = {
+                title: {
+                    text: 'Products',
+                    textStyle: {
+                        color: 'black'
+                    },
+                    left: 'center'
+                },
+                tooltip: {
+                    trigger: 'axis'
+                },
+                xAxis: {
+                    name: 'City Name',
+                    nameLocation: 'middle',
+                    nameTextStyle: {
+                        padding: [20, 0, 0, 0]
+                    },
+                    type: 'category',
+                    data: data.x_cities,
+                    axisLabel: {
+                        show: true,
+                        rotate: -45,
+                        textStyle: {
+                            color: 'black'
+                        }
+                    },
+                    axisLine: {
+                        lineStyle: {
+                            color: 'black'
+                        }
+                    }
+                },
+                yAxis: {
+                    name: 'Products count',
+                    nameLocation: 'end',
+                    type: 'value',
+                    axisLabel: {
+                        show: true,
+                        textStyle: {
+                            color: 'black'
+                        }
+                    },
+                    axisLine: {
+                        lineStyle: {
+                            color: 'black'
+                        }
+                    }
+                },
+                series: [{
+                    data: data.y_products,
+                    type: 'bar',
+                    showBackground: true,
+                    backgroundStyle: {
+                        color: 'rgba(180, 180, 180, 0.2)'
+                    }
+                }]
+            })
+        );
+        // chart_id
+        chart_2.setOption(
+           (option_1 = {
+                title: {
+                    text: "Revenue Per City",
+                    textStyle: {
+                        color: "black",
+                    },
+                    left: "center",
+                },
+                tooltip: {
+                    trigger: "axis",
+                },
+                grid: {
+                    left: 80
+                },
+                xAxis: {
+                    type: "category",
+                    data: data.x_cities,
+                    name: "City Name",
+                    nameLocation: "middle",
+                    nameTextStyle: {
+                        padding: [20, 0, 0, 0],
+                    },
+                    axisLabel: {
+                        show: true,
+                        rotate: -45,
+                        textStyle: {
+                            color: "black",
+                        },
+                    },
+                    axisLine: {
+                        lineStyle: {
+                            color: "black",
+                        },
+                    },
+                },
+                yAxis: {
+                    type: "value",
+                    name: "Revenue($)",
+                    nameLocation: "end",
+                    axisLabel: {
+                        show: true,
+                        textStyle: {
+                            color: "black",
+                        },
+                    },
+                    axisLine: {
+                        lineStyle: {
+                            color: "black",
+                        },
+                    },
+                },
+                series: [{
+                        data: data.y_revenues,
+                        type: "line",
+                        smooth: true,
+                        itemStyle: {
+                            normal: {
+                                label: { show: true },
+                                // color: "red",
+                                // lineStyle: {
+                                //     color: "green",
+                                // },
+                            },
+                        },
+                    },
+                ],
+            })
+        );
+    })
+    if (option_1 && typeof option_1 === 'object') {;
+        chart_1.setOption(option_1);
+    }
+    if (option_2 && typeof option_2 === 'object') {
+        chart_2.setOption(option_2)
+    }
+</script>
+{% endblock %}
