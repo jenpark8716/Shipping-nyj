@@ -34,7 +34,7 @@ class DBUtils:
         self.user = 'jen'
         self.pwd = '1513'
         self.db = 'Shipping'
-        self.db_url = "postgresql://jen:1513@localhost:5432/Shipping"
+        self.db_url = os.environ['DATABASE_URL']
     def get_con(self):
         try:
             self.conn = psycopg2.connect(self.db_url)
